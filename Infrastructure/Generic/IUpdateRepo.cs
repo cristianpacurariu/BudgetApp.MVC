@@ -1,7 +1,9 @@
-﻿namespace Infrastructure
+﻿using System.Threading.Tasks;
+
+namespace Infrastructure
 {
     public interface IUpdateRepo<T>
     {
-        void Update(T t);
+        Task Update(T t);
     }
 }

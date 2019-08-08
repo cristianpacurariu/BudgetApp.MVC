@@ -4,35 +4,37 @@ using MVC.Budget.DataAccess.Model;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Repositories
 {
     public class AccountRepo : IAccountRepo<AccountDto, AccountDtoFilter>
     {
-        public int Add(AccountDto toMap)
+        public async Task<int> Add(AccountDto toMap)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
                 Account toAdd = Mapper.Map<AccountDto, Account>(toMap);
                 context.Accounts.Add(toAdd);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
 
                 return toAdd.Id;
             }
         }
-        public List<AccountDto> All()
+        public async Task<List<AccountDto>> All()
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                List<Account> accountsToMap = context.Accounts.ToList();
+                List<Account> accountsToMap = await context.Accounts.ToListAsync();
                 return Mapper.Map<List<Account>, List<AccountDto>>(accountsToMap);
             }
         }
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                Account toDelete = context.Accounts.FirstOrDefault(d => d.Id == id);
+                Account toDelete = await context.Accounts.FirstOrDefaultAsync(d => d.Id == id);
 
                 if (toDelete == null)
                 {
@@ -41,13 +43,13 @@ namespace Repositories
                 else
                 {
                     context.Accounts.Remove(toDelete);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
 
                     return true;
                 }
             }
         }
-        public List<AccountDto> Filter(AccountDtoFilter filter)
+        public async Task<List<AccountDto>> Filter(AccountDtoFilter filter)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
@@ -55,17 +57,17 @@ namespace Repositories
 
                 if (filter.IdCurrency != null)
                 {
-                    fromDb = context.Accounts.Where(d => d.IdCurrency == filter.IdCurrency).ToList();
+                    fromDb = await context.Accounts.Where(d => d.IdCurrency == filter.IdCurrency).ToListAsync();
                 }
 
                 return Mapper.Map<List<Account>, List<AccountDto>>(fromDb);
             }
         }
-        public AccountDto Get(int i)
+        public async Task<AccountDto> Get(int i)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                Account fromDb = context.Accounts.FirstOrDefault(d => d.Id == i);
+                Account fromDb = await context.Accounts.FirstOrDefaultAsync(d => d.Id == i);
 
                 if (fromDb == null)
                 {
@@ -75,7 +77,7 @@ namespace Repositories
                 return Mapper.Map<Account, AccountDto>(fromDb);
             }
         }
-        public void Update(AccountDto t)
+        public async Task Update(AccountDto t)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
@@ -88,7 +90,7 @@ namespace Repositories
                 context.Accounts.Attach(toUpdate);
                 context.Entry(toUpdate).State = System.Data.Entity.EntityState.Modified;
 
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

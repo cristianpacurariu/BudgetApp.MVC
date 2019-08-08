@@ -1,7 +1,9 @@
-﻿namespace Infrastructure
+﻿using System.Threading.Tasks;
+
+namespace Infrastructure
 {
     public interface IAddRepo<T>
     {
-        int Add(T item);
+        Task<int> Add(T item);
     }
 }

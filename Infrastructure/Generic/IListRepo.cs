@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure
 {
     public interface IListRepo<T>
     {
-         List<T> All();
+         Task<List<T>> All();
     }
 }

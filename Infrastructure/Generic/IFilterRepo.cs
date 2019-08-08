@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure
 {
     public interface IFilterRepo <T, F>
     {
-        List<T> Filter(F filter);
+        Task<List<T>> Filter(F filter);
     }
 }

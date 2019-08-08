@@ -4,24 +4,26 @@ using Infrastructure;
 using Domain;
 using MVC.Budget.DataAccess.Model;
 using AutoMapper;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Repositories
 {
     public class CurrencyRepo : ICurrencyRepo<CurrencyDto>
     {
-        public List<CurrencyDto> All()
+        public async Task<List<CurrencyDto>> All()
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                List<Currency> fromDb = context.Currencies.ToList();
+                List<Currency> fromDb = await context.Currencies.ToListAsync();
                 return Mapper.Map<List<Currency>, List<CurrencyDto>>(fromDb);
             }
         }
-        public CurrencyDto Get(int i)
+        public async Task<CurrencyDto> Get(int i)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                Currency fromDb = context.Currencies.FirstOrDefault(d => d.Id == i);
+                Currency fromDb = await context.Currencies.FirstOrDefaultAsync(d => d.Id == i);
                 if (fromDb == null)
                 {
                     return null;

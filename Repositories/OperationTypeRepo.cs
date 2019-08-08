@@ -7,50 +7,51 @@ using Domain;
 using Infrastructure;
 using AutoMapper;
 using MVC.Budget.DataAccess.Model;
+using System.Data.Entity;
 
 namespace Repositories
 {
     public class OperationTypeRepo : IOperationTypeRepo<OperationTypeDto>
     {
-        public int Add(OperationTypeDto item)
+        public async Task<int> Add(OperationTypeDto item)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
                 OperationType toAdd = Mapper.Map<OperationTypeDto, OperationType>(item);
                 context.OperationTypes.Add(toAdd);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
 
                 return toAdd.Id;
             }
         }
-        public List<OperationTypeDto> All()
+        public async Task<List<OperationTypeDto>> All()
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                List<OperationType> fromDb = context.OperationTypes.ToList();
+                List<OperationType> fromDb = await context.OperationTypes.ToListAsync();
                 return Mapper.Map<List<OperationType>, List<OperationTypeDto>>(fromDb);
             }
         }
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                OperationType toDelete = context.OperationTypes.FirstOrDefault(d => d.Id == id);
+                OperationType toDelete = await context.OperationTypes.FirstOrDefaultAsync(d => d.Id == id);
                 if (toDelete == null)
                 {
                     return false;
                 }
 
                 context.OperationTypes.Remove(toDelete);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
                 return true;
             }
         }
-        public OperationTypeDto Get(int i)
+        public async Task<OperationTypeDto> Get(int i)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                OperationType toGet = context.OperationTypes.FirstOrDefault(d => d.Id == i);
+                OperationType toGet = await context.OperationTypes.FirstOrDefaultAsync(d => d.Id == i);
                 if (toGet == null)
                 {
                     return null;
@@ -58,7 +59,7 @@ namespace Repositories
                 return Mapper.Map<OperationType, OperationTypeDto>(toGet);
             }
         }
-        public void Update(OperationTypeDto t)
+        public async Task Update(OperationTypeDto t)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
@@ -66,7 +67,7 @@ namespace Repositories
 
                 context.OperationTypes.Attach(toUpdate);
                 context.Entry(toUpdate).State = System.Data.Entity.EntityState.Modified;
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

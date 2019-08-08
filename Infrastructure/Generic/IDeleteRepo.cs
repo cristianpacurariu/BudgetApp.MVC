@@ -1,7 +1,9 @@
-﻿namespace Infrastructure
+﻿using System.Threading.Tasks;
+
+namespace Infrastructure
 {
     public interface IDeleteRepo<T>
     {
-        bool Delete(int id);
+        Task<bool> Delete(int id);
     }
 }

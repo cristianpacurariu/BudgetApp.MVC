@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
+using MVC.Bugdet.App.Utils;
 using Repositories;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -19,7 +17,7 @@ namespace MVC.Bugdet.App
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            Mapper.Initialize(d => d.AddProfile<RepoMapper>());
+            Mapper.Initialize(d => d.AddProfiles(new List<Profile>() { new RepoMapper(), new WebMapper() }));
         }
     }
 }

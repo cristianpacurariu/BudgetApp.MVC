@@ -4,35 +4,37 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using MVC.Budget.DataAccess.Model;
+using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace Repositories
 {
     public class OperationRepo : IOperationRepo<OperationDto, OperationDtoFilter>
     {
-        public int Add(OperationDto item)
+        public async Task<int> Add(OperationDto item)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
                 Operation toAdd = Mapper.Map<OperationDto, Operation>(item);
                 context.Operations.Add(toAdd);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
 
                 return toAdd.Id;
             }
         }
-        public List<OperationDto> All()
+        public async Task<List<OperationDto>> All()
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                List<Operation> fromDb = context.Operations.ToList();
+                List<Operation> fromDb = await context.Operations.ToListAsync();
                 return Mapper.Map<List<Operation>, List<OperationDto>>(fromDb);
             }
         }
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                Operation toDelete = context.Operations.FirstOrDefault(d => d.Id == id);
+                Operation toDelete = await context.Operations.FirstOrDefaultAsync(d => d.Id == id);
                 if (toDelete == null)
                 {
                     return false;
@@ -40,12 +42,12 @@ namespace Repositories
                 else
                 {
                     context.Operations.Remove(toDelete);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                     return true;
                 }
             }
         }
-        public List<OperationDto> Filter(OperationDtoFilter filter)
+        public async Task<List<OperationDto>> Filter(OperationDtoFilter filter)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
@@ -86,14 +88,14 @@ namespace Repositories
                     query = query.Where(d => d.Date <= filter.DateTo);
                 }
 
-                return Mapper.Map<List<Operation>,List<OperationDto>>(query.ToList());
+                return Mapper.Map<List<Operation>,List<OperationDto>>(await query.ToListAsync());
             }
         }
-        public OperationDto Get(int i)
+        public async Task<OperationDto> Get(int i)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
-                Operation fromDb = context.Operations.FirstOrDefault(d => d.Id == i);
+                Operation fromDb = await context.Operations.FirstOrDefaultAsync(d => d.Id == i);
                 if (fromDb == null)
                 {
                     return null;
@@ -102,7 +104,7 @@ namespace Repositories
                 return Mapper.Map<Operation, OperationDto>(fromDb);
             }
         }
-        public void Update(OperationDto t)
+        public async Task Update(OperationDto t)
         {
             using (SpendingsDBContext context = new SpendingsDBContext())
             {
@@ -111,7 +113,7 @@ namespace Repositories
                 context.Operations.Attach(toUpdate);
                 context.Entry(toUpdate).State = System.Data.Entity.EntityState.Modified;
 
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }
