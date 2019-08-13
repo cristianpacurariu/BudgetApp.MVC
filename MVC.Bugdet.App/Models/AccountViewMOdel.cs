@@ -16,6 +16,7 @@ namespace MVC.Bugdet.App.Models
         [Required]
         [MaxLength(15)]
         public string Name { get; set; }
+        public CurrencyDto Currency { get; set; }
 
         public List<SelectListItem> Currencies { get; set; }
     }
