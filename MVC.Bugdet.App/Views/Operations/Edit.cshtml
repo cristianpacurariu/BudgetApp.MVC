@@ -1,18 +1,16 @@
 ﻿@model MVC.Bugdet.App.Models.OperationViewModel
 
+
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
-
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>OperationViewModel</h4>
+        <h4>Edit Operation</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -44,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @id = "datepicker", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -69,6 +67,22 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+
+@*@section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }*@
+@section datepicker{
+    @*@Scripts.Render("~/Scripts/jquery-3.4.1.min.js")*@
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                dateFormat: "DD, MM, yy",
+                showOtherMonths: true,
+                selectOtherMonths: true,
+            });
+        });
+    </script>
+    //showWeek: true,
+    //firstDay: 1
 }

@@ -1,57 +1,75 @@
-﻿@model IEnumerable<MVC.Bugdet.App.Models.OperationViewModel>
+﻿@using MVC.Bugdet.App.Resources;
+@model IEnumerable<MVC.Bugdet.App.Models.OperationViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+@section styles {
+    @Styles.Render("~/Content/DataTables/media/css/jquery.dataTables.css")
+}
+<h2>Operations</h2>
 
 <p>
     @Html.ActionLink("Create New", "Edit")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Account)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OperationType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ammount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th></th>
-    </tr>
+<table id="tb-op" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Account)
+            </th>
+            <th>
+                @Labels.OperationType
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ammount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Account.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OperationType.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ammount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(item.Account.Name + " - " + item.Account.Currency.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OperationType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ammount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+@section scripts{
+    @Scripts.Render("~/Scripts/DataTables/media/js/jquery.dataTables.min.js")
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tb-op').DataTable();
+        })
+    </script>
+}
