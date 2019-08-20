@@ -1,6 +1,5 @@
 ﻿@model MVC.Bugdet.App.Models.OperationViewModel
 
-
 @{
     ViewBag.Title = "Edit";
 }
@@ -18,7 +17,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.IdAccount, Model.Accounts, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.IdAccount, Model.Accounts, new { @class = "form-control selectmenu" })
                 @Html.ValidationMessageFor(model => model.IdAccount, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -26,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.OperationType, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.IdOperationType, Model.Categories, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.IdOperationType, Model.Categories, new { @class = "form-control selectmenu" })
                 @Html.ValidationMessageFor(model => model.IdOperationType, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -57,32 +56,36 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="ui-button ui-corner-all ui-widget" />
             </div>
         </div>
     </div>
 }
-
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "ui-button ui-corner-all ui-widget" })
 </div>
 
-
-@*@section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }*@
 @section datepicker{
-    @*@Scripts.Render("~/Scripts/jquery-3.4.1.min.js")*@
     @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
     <script>
         $(function () {
             $("#datepicker").datepicker({
-                dateFormat: "DD, MM, yy",
+                dateFormat: "dd MM yy",
+                firstDay: 1,
                 showOtherMonths: true,
                 selectOtherMonths: true,
+                showWeek: true,
+                weekHeader: "Week",
+                gotoCurrent: true
             });
+        })
+    </script>
+}
+@section UI{
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script>
+        $(".selectmenu").selectmenu({
+            
         });
     </script>
-    //showWeek: true,
-    //firstDay: 1
 }

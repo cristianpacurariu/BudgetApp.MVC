@@ -23,7 +23,7 @@ namespace MVC.Bugdet.App.Models
 
         [Required]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime Date { get; set; }
         public string Description { get; set; }
         public virtual AccountDto Account { get; set; }

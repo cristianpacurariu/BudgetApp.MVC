@@ -30,26 +30,6 @@ namespace MVC.Bugdet.App.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Create()
-        {
-            AccountViewModel vm = new AccountViewModel();
-            await AddCurrencies(vm);
-            return View(vm);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(AccountViewModel vm)
-        {
-            if (ModelState.IsValid)
-            {
-                AccountDto toAdd = Mapper.Map<AccountViewModel, AccountDto>(vm);
-                await _accountRepo.Add(toAdd);
-            }
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
         public async Task<ActionResult> Edit(int? id)
         {
             AccountViewModel vm = new AccountViewModel();
@@ -74,16 +54,23 @@ namespace MVC.Bugdet.App.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(AccountViewModel vm)
         {
-            if (ModelState.IsValid)
-            {
-                await _accountRepo.Update(Mapper.Map<AccountViewModel, AccountDto>(vm));
-                return RedirectToAction("Index");
-            }
-            else
+            if (!ModelState.IsValid)
             {
                 await AddCurrencies(vm);
                 return View(vm);
             }
+
+            AccountDto dto = Mapper.Map<AccountViewModel, AccountDto>(vm);
+
+            if (vm.Id == 0)
+            {
+                await _accountRepo.Add(dto);
+            }
+            else
+            {
+                await _accountRepo.Update(dto);
+            }
+            return RedirectToAction("Index");
         }
 
         public async Task<ActionResult> Details(int? id)

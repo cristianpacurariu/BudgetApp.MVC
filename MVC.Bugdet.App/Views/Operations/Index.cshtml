@@ -4,14 +4,13 @@
 @{
     ViewBag.Title = "Index";
 }
-
 @section styles {
     @Styles.Render("~/Content/DataTables/media/css/jquery.dataTables.css")
 }
 <h2>Operations</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Edit")
+    @Html.ActionLink("Create New", "Edit", null, new { @class = "ui-button ui-corner-all ui-widget" })
 </p>
 <table id="tb-op" class="table table-bordered">
     <thead>
@@ -55,18 +54,18 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new {@class="ui-icon ui-icon-pencil" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new {@class="ui-icon ui-icon-info" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new {@class="ui-icon ui-icon-trash"})
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-@section scripts{
+@section dataTable{
     @Scripts.Render("~/Scripts/DataTables/media/js/jquery.dataTables.min.js")
-    
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#tb-op').DataTable();
