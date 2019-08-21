@@ -103,6 +103,8 @@
       <DependentUpon>SpendingsModel.edmx</DependentUpon>
       <LastGenOutput>SpendingsModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Utils\CreateDB.sql" />
+    <Content Include="Utils\InitialCurrenciesInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
